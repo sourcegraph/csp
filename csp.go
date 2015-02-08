@@ -22,7 +22,7 @@ type Handler struct {
 
 	Next http.Handler
 
-	// ReportLog is the loger that CSP violation reports are sent
+	// ReportLog is the logger that CSP violation reports are sent
 	// to. If nil, the default logger (from package log) is used.
 	ReportLog *log.Logger
 }
