@@ -30,7 +30,7 @@ func TestHandler(t *testing.T) {
 		w := httptest.NewRecorder()
 		r, _ := http.NewRequest("GET", "/foo", nil)
 		h := NewHandler(test.Config)
-		h.ServeHTTP(w, r)
+		h.ServeHTTP(w, r, nil)
 
 		if !reflect.DeepEqual(w.HeaderMap, test.wantHeaders) {
 			t.Errorf("Config %+v\ngot headers %v\nwant        %v", test.Config, w.HeaderMap, test.wantHeaders)
@@ -57,7 +57,7 @@ func TestHandlerReport(t *testing.T) {
 		h := NewHandler(test.Config)
 		var buf bytes.Buffer
 		h.ReportLog = log.New(&buf, "", 0)
-		h.ServeHTTP(w, r)
+		h.ServeHTTP(w, r, nil)
 
 		if report := buf.String(); !strings.HasPrefix(report, test.wantReportPrefix) {
 			t.Errorf("Config %+v: got report %q, want prefix %q", test.Config, report, test.wantReportPrefix)

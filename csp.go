@@ -20,15 +20,13 @@ type Handler struct {
 	csp           string // Content-Security-Policy header
 	cspReportOnly string // Content-Security-Policy-Report-Only header
 
-	Next http.Handler
-
 	// ReportLog is the logger that CSP violation reports are sent
 	// to. If nil, the default logger (from package log) is used.
 	ReportLog *log.Logger
 }
 
 // ServeHTTP implements http.Handler.
-func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	if h.csp != "" {
 		w.Header().Set("Content-Security-Policy", h.csp)
 	}
@@ -47,8 +45,8 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if h.Next != nil {
-		h.Next.ServeHTTP(w, r)
+	if next != nil {
+		next(w, r)
 	}
 }
 
